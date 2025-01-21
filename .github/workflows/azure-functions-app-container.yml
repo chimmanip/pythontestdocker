@@ -23,6 +23,10 @@ on:
   push:
     branches: [""]
   workflow_dispatch: 
+    inputs:
+      Azure_Image_Tag:
+        description: 'Provide the image tag'
+        required: true
 
 permissions:
   contents: read
@@ -61,16 +65,16 @@ jobs:
         # If your function app project is not located in your repository's root
         # Please change the path to your directory for docker build
         set -x
-        docker build . -t ${{ env.LOGIN_SERVER }}/${{ env.IMAGE }}:${{ env.TAG }}
+        docker build . -t ${{ env.LOGIN_SERVER }}/${{ env.IMAGE }}:${{ github.event.inputs.Azure_Image_Tag }}
         echo "Docker Build Succeed"
-        docker push ${{ env.LOGIN_SERVER }}/${{ env.IMAGE }}:${{ env.TAG }}
+        docker push ${{ env.LOGIN_SERVER }}/${{ env.IMAGE }}:${{ github.event.inputs.Azure_Image_Tag }}
 
     - name: 'Run Azure Functions Container Action'
       uses: Azure/functions-container-action@v1
       id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        image: ${{ env.LOGIN_SERVER  }}/${{ env.IMAGE }}:${{ env.TAG }}
+        image: ${{ env.LOGIN_SERVER  }}/${{ env.IMAGE }}:${{ github.event.inputs.Azure_Image_Tag }}
 
     # If you want to display or use the functionapp url, then uncomment the task below
     #- name: 'Published functionapp url'
