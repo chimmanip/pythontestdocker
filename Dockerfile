@@ -8,3 +8,4 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 COPY . /home/site/wwwroot
  
 RUN cd /home/site/wwwroot && pip install -r requirements.txt
+#WEBSITES_ENABLE_APP_SERVICE_STORAGE
