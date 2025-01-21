@@ -21,7 +21,8 @@ name: Deploy container to Azure Functions App
 
 on:
   push:
-    branches: ["main"]
+    branches: 
+  workflow_dispatch: 
 
 permissions:
   contents: read
